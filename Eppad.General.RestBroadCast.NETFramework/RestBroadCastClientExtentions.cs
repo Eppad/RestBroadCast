@@ -22,7 +22,8 @@ namespace Eppad.General.RestBroadCast.NETFramework
             var relults = new List<RestRequestAsyncHandle>();
             foreach (var client in broadCastclient.Clients)
             {
-                var r = client.GetAsync(request, (res, t) => {
+                var r = client.GetAsync(request, (res, t) =>
+                {
                     callback(res, t);
                 });
                 relults.Add(r);
@@ -37,8 +38,9 @@ namespace Eppad.General.RestBroadCast.NETFramework
             var handlers = new List<RestRequestAsyncHandle>();
             foreach (var client in broadCastclient.Clients)
             {
-                var handle = client.GetAsync<T>(request, (res, t) => {
-                    results.Add(new BroadCastResponse<T>{ Url = client.BaseUrl, Data = res.Data });
+                var handle = client.GetAsync<T>(request, (res, t) =>
+                {
+                    results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data });
                     if (results.Count == broadCastclient.Clients.Count) { callback(results, t); }
                 });
                 handlers.Add(handle);
@@ -47,24 +49,32 @@ namespace Eppad.General.RestBroadCast.NETFramework
         }
 
         public static List<RestRequestAsyncHandle> GetGatherFirst<T>(this IRestBroadCastClient broadCastclient, IRestRequest request,
-          Action<List<BroadCastResponse<T>>, RestRequestAsyncHandle> callback) where T : new()
+          Action<BroadCastResponse<T>, RestRequestAsyncHandle> callback) where T : new()
         {
-            var results = new List<BroadCastResponse<T>>();
             var handlers = new List<RestRequestAsyncHandle>();
+            int clientCount = 0;
             foreach (var client in broadCastclient.Clients)
             {
-                var handle = client.GetAsync<T>(request, (res, t) => {
-                    results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data });
-                    if (res.StatusCode == HttpStatusCode.OK) { 
+                var handle = client.GetAsync<T>(request, (res, t) =>
+                {
+                    clientCount++;
+                    var result = new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data, Status = res.StatusCode };
+                    if (res.StatusCode == HttpStatusCode.OK)
+                    {
                         handlers.ForEach(x => x.Abort());
-                        callback(results, t); 
-                        }
+                        callback(result, t);
+                    }
+                    else if(clientCount == broadCastclient.Clients.Count)
+                    {
+                        callback(result, t);
+                    }
+
+                    
                 });
                 handlers.Add(handle);
             }
             return handlers;
         }
-
 
         /// <summary>
         /// BroadCast Request and return tasks of results to handle by caller
@@ -100,7 +110,8 @@ namespace Eppad.General.RestBroadCast.NETFramework
             var relults = new List<RestRequestAsyncHandle>();
             foreach (var client in broadCastclient.Clients)
             {
-                var r = client.PostAsync(request, (res, t) => {
+                var r = client.PostAsync(request, (res, t) =>
+                {
                     callback(res, t);
                 });
                 relults.Add(r);
@@ -115,7 +126,8 @@ namespace Eppad.General.RestBroadCast.NETFramework
             var handlers = new List<RestRequestAsyncHandle>();
             foreach (var client in broadCastclient.Clients)
             {
-                var handle = client.PostAsync<T>(request, (res, t) => {
+                var handle = client.PostAsync<T>(request, (res, t) =>
+                {
                     results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data });
                     if (results.Count == broadCastclient.Clients.Count) { callback(results, t); }
                 });
@@ -168,5 +180,5 @@ namespace Eppad.General.RestBroadCast.NETFramework
             return results;
         }
     }
-   
+
 }
