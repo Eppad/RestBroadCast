@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eppad.General.RestBroadCast", "Eppad.General.RestBroadCast\Eppad.General.RestBroadCast.csproj", "{68A38AD2-9DC2-4940-B6AC-EBB69AD6AC2F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eppad.Genral.RestBroadCast.Test", "Eppad.Genral.RestBroadCast.Test\Eppad.Genral.RestBroadCast.Test.csproj", "{056197A0-D22C-452E-A23A-17375C746B7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eppad.General.RestBroadCast.NETFramework", "Eppad.General.RestBroadCast.NETFramework\Eppad.General.RestBroadCast.NETFramework.csproj", "{29B4093F-FF71-48B3-9C4F-612D0D00FEA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{056197A0-D22C-452E-A23A-17375C746B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{056197A0-D22C-452E-A23A-17375C746B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{056197A0-D22C-452E-A23A-17375C746B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29B4093F-FF71-48B3-9C4F-612D0D00FEA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29B4093F-FF71-48B3-9C4F-612D0D00FEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29B4093F-FF71-48B3-9C4F-612D0D00FEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29B4093F-FF71-48B3-9C4F-612D0D00FEA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
