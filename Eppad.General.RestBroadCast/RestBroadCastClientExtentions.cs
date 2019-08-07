@@ -47,18 +47,27 @@ namespace Eppad.General.RestBroadCast
         }
 
         public static List<RestRequestAsyncHandle> GetGatherFirst<T>(this IRestBroadCastClient broadCastclient, IRestRequest request,
-          Action<List<BroadCastResponse<T>>, RestRequestAsyncHandle> callback) where T : new()
+           Action<BroadCastResponse<T>, RestRequestAsyncHandle> callback) where T : new()
         {
-            var results = new List<BroadCastResponse<T>>();
             var handlers = new List<RestRequestAsyncHandle>();
+            int clientCount = 0;
             foreach (var client in broadCastclient.Clients)
             {
-                var handle = client.GetAsync<T>(request, (res, t) => {
-                    results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data });
-                    if (res.StatusCode == HttpStatusCode.OK) { 
+                var handle = client.GetAsync<T>(request, (res, t) =>
+                {
+                    clientCount++;
+                    var result = new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data, Status = res.StatusCode };
+                    if (res.StatusCode == HttpStatusCode.OK)
+                    {
                         handlers.ForEach(x => x.Abort());
-                        callback(results, t); 
-                        }
+                        callback(result, t);
+                    }
+                    else if (clientCount == broadCastclient.Clients.Count)
+                    {
+                        callback(result, t);
+                    }
+
+
                 });
                 handlers.Add(handle);
             }
