@@ -47,7 +47,7 @@ namespace Eppad.General.RestBroadCast
         }
 
         public static List<RestRequestAsyncHandle> GetGatherFirst<T>(this IRestBroadCastClient broadCastclient, IRestRequest request,
-           Action<BroadCastResponse<T>, RestRequestAsyncHandle> callback) where T : new()
+          Action<BroadCastResponse<T>, RestRequestAsyncHandle> callback) where T : new()
         {
             var handlers = new List<RestRequestAsyncHandle>();
             int clientCount = 0;
@@ -125,7 +125,7 @@ namespace Eppad.General.RestBroadCast
             foreach (var client in broadCastclient.Clients)
             {
                 var handle = client.PostAsync<T>(request, (res, t) => {
-                    results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data });
+                    results.Add(new BroadCastResponse<T> { Url = client.BaseUrl, Data = res.Data, Status = res.StatusCode });
                     if (results.Count == broadCastclient.Clients.Count) { callback(results, t); }
                 });
                 handlers.Add(handle);
@@ -177,5 +177,5 @@ namespace Eppad.General.RestBroadCast
             return results;
         }
     }
-   
+
 }
